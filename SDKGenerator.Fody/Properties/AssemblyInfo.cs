@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestConsoleApp")]
+[assembly: AssemblyTitle("SDKGenerator.Fody")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TestConsoleApp")]
+[assembly: AssemblyProduct("SDKGenerator.Fody")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c9fb9c6e-f81d-4de8-9cf7-45acb7270a19")]
+[assembly: Guid("ee037223-1e00-4d44-b343-e651cb630f6b")]
 
 // Version information for an assembly consists of the following four values:
 //

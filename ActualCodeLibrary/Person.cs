@@ -4,29 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library
+namespace ActualCodeLibrary
 {
     public class Person
     {
         public string Name { get; set; }
 
+        private readonly int _id;
+
         public Person(int id, string name)
         {
+            _id = id;
+            Name = name;
         }
 
         public string GetKey()
         {
-            return "Person.GetKey.2";
+            return Name + " #" + _id;
         }
 
         private string DummyPrivateFunc()
         {
-            return "Person.DummyPrivateFunc.2";
+            return "Person.DummyPrivateFunc.1";
         }
 
         protected string DummyProtectedFunc()
         {
-            return "Person.DummyProtectedFunc.2";
+            return "Person.DummyProtectedFunc.1";
         }
     }
 }
