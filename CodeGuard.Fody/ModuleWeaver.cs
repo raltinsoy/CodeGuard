@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SDKGenerator.Fody
+namespace CodeGuard.Fody
 {
     public class ModuleWeaver : BaseModuleWeaver
     {
@@ -28,7 +28,7 @@ namespace SDKGenerator.Fody
             var exceptionCtor = reflectionType.GetConstructor(new Type[] { });
             var exceptionConstructorReference = ModuleDefinition.ImportReference(exceptionCtor);
 
-            foreach (var method in methodsToVisit.ToList())
+            foreach (var method in methodsToVisit.Where(x => !x.CustomAttributes.Any(y => y.AttributeType.Name == "IgnoreAttribute")).ToList())
             {
                 ClearContentAndAddException(method, exceptionConstructorReference);
             }
@@ -36,18 +36,24 @@ namespace SDKGenerator.Fody
 
         private void RemoveNotVisibleDefinitions(TypeDefinition typeDefinition)
         {
-            foreach (var methodToRemote in typeDefinition.Methods.Where(x => x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly).ToList())
+            foreach (var methodToRemote in typeDefinition.Methods.Where(x =>
+                !x.CustomAttributes.Any(y => y.AttributeType.Name == "IgnoreAttribute") &&
+                (x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly)).ToList())
             {
                 typeDefinition.Methods.Remove(methodToRemote);
             }
 
             //no access from outside
-            foreach (var propertyToRemote in typeDefinition.Properties.Where(x => x.GetMethod == null).ToList())
+            foreach (var propertyToRemote in typeDefinition.Properties.Where(x =>
+                !x.CustomAttributes.Any(y => y.AttributeType.Name == "IgnoreAttribute") &&
+                x.GetMethod == null).ToList())
             {
                 typeDefinition.Properties.Remove(propertyToRemote);
             }
 
-            foreach (var fieldToRemote in typeDefinition.Fields.Where(x => x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly).ToList())
+            foreach (var fieldToRemote in typeDefinition.Fields.Where(x =>
+                !x.CustomAttributes.Any(y => y.AttributeType.Name == "IgnoreAttribute") &&
+                (x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly)).ToList())
             {
                 typeDefinition.Fields.Remove(fieldToRemote);
             }

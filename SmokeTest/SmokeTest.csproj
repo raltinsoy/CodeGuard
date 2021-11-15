@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net472;netstandard2.0;</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeGuard\CodeGuard.csproj" />
+    <WeaverFiles Include="$(SolutionDir)$(SolutionName).Fody\bin\$(Configuration)\netstandard2.0\$(SolutionName).Fody.dll" />
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CodeGuard;
+using System;
 
-namespace ActualCodeLibrary
+namespace AssemblyToProcess
 {
     public class Person
     {
@@ -29,6 +26,7 @@ namespace ActualCodeLibrary
             return Name + " #" + _id;
         }
 
+        [IgnoreAttribute]
         private string DummyPrivateFunc()
         {
             return "Person.DummyPrivateFunc.1";

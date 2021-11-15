@@ -204,6 +204,8 @@ PublishScripts/
 # NuGet v3's project.json files produces more ignorable files
 *.nuget.props
 *.nuget.targets
+# nuget config file
+nuget.config
 
 # Microsoft Azure Build Output
 csx/
@@ -357,6 +359,3 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-
-# Fody - auto-generated XML schema
-FodyWeavers.xsd
