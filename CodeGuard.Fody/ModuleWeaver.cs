@@ -14,8 +14,14 @@ namespace CodeGuard.Fody
     {
         public override bool ShouldCleanReference => true;
 
+        private MethodReference _objectConstructor;
+
         public override void Execute()
         {
+            var objectDefinition = FindTypeDefinition("System.Object");
+            var constructorDefinition = objectDefinition.Methods.First(x => x.IsConstructor);
+            _objectConstructor = ModuleDefinition.ImportReference(constructorDefinition);
+
             var types = ModuleDefinition.GetAllTypes();
             var _typeDefinition = types.Last();
 
@@ -24,7 +30,7 @@ namespace CodeGuard.Fody
             var methodsToVisit = _typeDefinition.GetMethods().Concat(_typeDefinition.GetConstructors())
                 .Where(method => method.HasBody && !method.IsAbstract);
 
-            var reflectionType = typeof(Exception);
+            var reflectionType = typeof(SDKExportException);
             var exceptionCtor = reflectionType.GetConstructor(new Type[] { });
             var exceptionConstructorReference = ModuleDefinition.ImportReference(exceptionCtor);
 
@@ -63,8 +69,6 @@ namespace CodeGuard.Fody
                 {
                     typeDefinition.Properties.Remove(propertyToRemote);
                 }
-
-                typeDefinition.Properties.Remove(propertyToRemote);
             }
 
             foreach (var fieldToRemote in typeDefinition.Fields.Where(x => x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly).ToList())
@@ -76,8 +80,6 @@ namespace CodeGuard.Fody
                 {
                     typeDefinition.Fields.Remove(fieldToRemote);
                 }
-
-                typeDefinition.Fields.Remove(fieldToRemote);
             }
         }
 
@@ -92,12 +94,36 @@ namespace CodeGuard.Fody
         private void ClearContentAndAddException(MethodDefinition method, MethodReference exceptionConstructorReference)
         {
             method.Body.Instructions.Clear();
+            method.Body.Variables.Clear();
+            //method.Body.MaxStackSize = 8; //TODO: not working
 
             var ilProcessor = method.Body.GetILProcessor();
 
+            var attributeRemoved = method.RemoveAttribute("DoNotThrowExceptionAttribute");
+            //pretend like not exist
+            if (!attributeRemoved)
+            {
+                ilProcessor.Append(ilProcessor.Create(OpCodes.Nop));
+                ilProcessor.Append(ilProcessor.Create(OpCodes.Newobj, exceptionConstructorReference));
+                ilProcessor.Append(ilProcessor.Create(OpCodes.Throw));
+            }
+            else
+            {
+                if (method.IsConstructor)
+                {
+                    AddEmptyCtor(ilProcessor);
+                }
+                //TODO: else
+            }
+        }
+
+        private void AddEmptyCtor(ILProcessor ilProcessor)
+        {
+            ilProcessor.Append(Instruction.Create(OpCodes.Ldarg_0));
+            ilProcessor.Append(Instruction.Create(OpCodes.Call, _objectConstructor));
             ilProcessor.Append(Instruction.Create(OpCodes.Nop));
-            ilProcessor.Append(ilProcessor.Create(OpCodes.Newobj, exceptionConstructorReference));
-            ilProcessor.Append(ilProcessor.Create(OpCodes.Throw));
+            ilProcessor.Append(Instruction.Create(OpCodes.Nop));
+            ilProcessor.Append(Instruction.Create(OpCodes.Ret));
         }
     }
 }

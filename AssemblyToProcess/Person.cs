@@ -9,13 +9,24 @@ namespace AssemblyToProcess
 
         private string PrivateProperty { get; set; }
 
+        [MakeVisible]
+        private string PrivateProperty_Visible { get; set; }
+
         internal string InternalProperty { get; }
 
         protected string ProtectedProperty { get; }
 
-        private readonly int _id;
+        [MakeVisible]
+        private int _id;
 
-        public Person(int id, string name)
+        [DoNotThrowException]
+        public Person()
+        {
+            _id = 1;
+            Name = "Default";
+        }
+
+        public void SetInfo(int id, string name)
         {
             _id = id;
             Name = name;
