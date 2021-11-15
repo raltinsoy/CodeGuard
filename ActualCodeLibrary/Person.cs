@@ -10,7 +10,11 @@ namespace ActualCodeLibrary
     {
         public string Name { get; set; }
 
-        private string PrivateProperty2 { get; set; }
+        private string PrivateProperty { get; set; }
+
+        internal string InternalProperty { get; }
+
+        protected string ProtectedProperty { get; }
 
         private readonly int _id;
 

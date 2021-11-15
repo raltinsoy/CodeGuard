@@ -19,7 +19,7 @@ namespace SDKGenerator.Fody
             var types = ModuleDefinition.GetAllTypes();
             var _typeDefinition = types.Last();
 
-            ClearNotVisibleDefinitions(_typeDefinition);
+            RemoveNotVisibleDefinitions(_typeDefinition);
 
             var methodsToVisit = _typeDefinition.GetMethods().Concat(_typeDefinition.GetConstructors())
                 .Where(method => method.HasBody && !method.IsAbstract);
@@ -34,22 +34,22 @@ namespace SDKGenerator.Fody
             }
         }
 
-        private void ClearNotVisibleDefinitions(TypeDefinition typeDefinition)
+        private void RemoveNotVisibleDefinitions(TypeDefinition typeDefinition)
         {
             foreach (var methodToRemote in typeDefinition.Methods.Where(x => x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly).ToList())
             {
                 typeDefinition.Methods.Remove(methodToRemote);
             }
 
-            //TODO: properties için de ekle
-            /*foreach (var methodToRemote in typeDefinition.Properties.Where(x => x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly).ToList())
+            //no access from outside
+            foreach (var propertyToRemote in typeDefinition.Properties.Where(x => x.GetMethod == null).ToList())
             {
-                typeDefinition.Properties.Remove(methodToRemote);
-            }*/
+                typeDefinition.Properties.Remove(propertyToRemote);
+            }
 
-            foreach (var methodToRemote in typeDefinition.Fields.Where(x => x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly).ToList())
+            foreach (var fieldToRemote in typeDefinition.Fields.Where(x => x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly).ToList())
             {
-                typeDefinition.Fields.Remove(methodToRemote);
+                typeDefinition.Fields.Remove(fieldToRemote);
             }
         }
 

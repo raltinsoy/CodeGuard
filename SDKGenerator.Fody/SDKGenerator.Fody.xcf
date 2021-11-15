@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:attribute name="DoNotClearAttribute" type="xs:boolean">
+    <xs:annotation>
+      <xs:documentation>Bla bla bla.</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+</xs:complexType>
