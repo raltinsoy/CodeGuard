@@ -26,10 +26,21 @@ namespace AssemblyToProcess
             return Name + " #" + _id;
         }
 
-        [IgnoreAttribute]
+        [MakeVisible]
+        private string DummyPrivateFunc_Ignored()
+        {
+            return "Person.DummyPrivateFunc.2";
+        }
+
         private string DummyPrivateFunc()
         {
             return "Person.DummyPrivateFunc.1";
+        }
+
+        [DoNotClearBody]
+        protected string DummyProtectedFunc_NotCleared()
+        {
+            return "Person.DummyProtectedFunc.2";
         }
 
         protected string DummyProtectedFunc()
