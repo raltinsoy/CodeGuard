@@ -7,6 +7,13 @@
     <RepositoryUrl>https://github.com/raltinsoy/CodeGuard</RepositoryUrl>
     <Authors>raltinsoy</Authors>
     <Company>raltinsoy</Company>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>ILWeaving, Fody, Cecil, AOP</PackageTags>
+    <PackageProjectUrl>https://github.com/raltinsoy/CodeGuard</PackageProjectUrl>
+    <Description>SDK Generator</Description>
+    <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
