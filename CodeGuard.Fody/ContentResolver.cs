@@ -11,14 +11,8 @@ namespace CodeGuard.Fody
 {
     public partial class ModuleWeaver
     {
-        private MethodReference _sdkExportExceptionConstructorReference;
-
         public void ContentResolver()
         {
-            var reflectionType = typeof(SDKExportException);
-            var exceptionCtor = reflectionType.GetConstructor(new Type[] { });
-            _sdkExportExceptionConstructorReference = ModuleDefinition.ImportReference(exceptionCtor);
-
             foreach (var typeDefinition in _types)
             {
                 var methodsToVisit = typeDefinition.GetMethods().Concat(typeDefinition.GetConstructors())
@@ -73,7 +67,7 @@ namespace CodeGuard.Fody
         private void AddEmptyCtor(ILProcessor ilProcessor)
         {
             ilProcessor.Append(Instruction.Create(OpCodes.Ldarg_0));
-            ilProcessor.Append(Instruction.Create(OpCodes.Call, _objectConstructor));
+            ilProcessor.Append(Instruction.Create(OpCodes.Call, _objectConstructorReference));
             ilProcessor.Append(Instruction.Create(OpCodes.Ret));
         }
 

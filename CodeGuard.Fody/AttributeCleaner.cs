@@ -9,7 +9,7 @@ namespace CodeGuard.Fody
 {
     public partial class ModuleWeaver
     {
-        private HashSet<string> _typeLevelAttributeNames = new HashSet<string>
+        private readonly HashSet<string> _typeLevelAttributeNames = new HashSet<string>
         {
             "CodeGuard.MakeVisibleAttribute",
             "CodeGuard.DoNotClearBodyAttribute",

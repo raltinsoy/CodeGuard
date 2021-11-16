@@ -1,7 +1,5 @@
 ﻿using Fody;
 using Mono.Cecil;
-using Mono.Cecil.Cil;
-using Mono.Cecil.Rocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +12,9 @@ namespace CodeGuard.Fody
     {
         public override bool ShouldCleanReference => true;
 
-        private MethodReference _objectConstructor;
+        private MethodReference _objectConstructorReference;
+
+        private MethodReference _sdkExportExceptionConstructorReference;
 
         private IEnumerable<TypeDefinition> _types;
 
@@ -22,7 +22,11 @@ namespace CodeGuard.Fody
         {
             var objectDefinition = FindTypeDefinition("System.Object");
             var constructorDefinition = objectDefinition.Methods.First(x => x.IsConstructor);
-            _objectConstructor = ModuleDefinition.ImportReference(constructorDefinition);
+            _objectConstructorReference = ModuleDefinition.ImportReference(constructorDefinition);
+
+            var reflectionType = typeof(SDKExportException);
+            var exceptionCtor = reflectionType.GetConstructor(new Type[] { });
+            _sdkExportExceptionConstructorReference = ModuleDefinition.ImportReference(exceptionCtor);
 
             _types = ModuleDefinition.GetTypes().Where(x => x.IsClass && x.BaseType != null);
 
