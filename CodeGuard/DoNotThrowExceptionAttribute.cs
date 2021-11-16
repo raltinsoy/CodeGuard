@@ -9,7 +9,7 @@ namespace CodeGuard
     /// <summary>
     /// Clear the body but not add exception
     /// </summary>
-    [AttributeUsage(AttributeTargets.All, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property, Inherited = false)]
     public sealed class DoNotThrowExceptionAttribute : Attribute
     {
     }

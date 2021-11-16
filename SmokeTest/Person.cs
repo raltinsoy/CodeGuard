@@ -9,14 +9,10 @@ namespace SmokeTest
 
         private string PrivateProperty { get; set; }
 
-        [MakeVisible]
-        private string PrivateProperty_Visible { get; set; }
-
         internal string InternalProperty { get; }
 
         protected string ProtectedProperty { get; }
 
-        [MakeVisible]
         private int _id;
 
         [DoNotThrowException]

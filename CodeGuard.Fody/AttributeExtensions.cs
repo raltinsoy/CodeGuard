@@ -19,5 +19,10 @@ namespace CodeGuard.Fody
 
             return false;
         }
+
+        public static bool HasAttribute(this ICustomAttributeProvider attributeProvider, string attributeName)
+        {
+            return attributeProvider.CustomAttributes.Any(x => x.AttributeType.Name == attributeName);
+        }
     }
 }
