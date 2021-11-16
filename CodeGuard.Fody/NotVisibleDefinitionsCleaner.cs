@@ -19,7 +19,10 @@ namespace CodeGuard.Fody
 
         private void RemoveNotVisibleDefinitions(TypeDefinition typeDefinition)
         {
-            foreach (var methodToRemote in typeDefinition.Methods.Where(x => x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly).ToList())
+            foreach (var methodToRemote in typeDefinition.Methods.Where(x =>
+                (!x.IsGetter) && //skip Property
+                (!x.IsSetter) && //skip Property
+                (x.IsPrivate || x.IsAssembly || x.IsFamilyOrAssembly || x.IsFamilyAndAssembly)).ToList())
             {
                 var visibleAttrExist = methodToRemote.HasAttribute("MakeVisibleAttribute");
                 if (!visibleAttrExist)
@@ -29,12 +32,30 @@ namespace CodeGuard.Fody
             }
 
             //no access from outside
-            foreach (var propertyToRemote in typeDefinition.Properties.Where(x => x.GetMethod == null).ToList())
+            foreach (var propertyToRemote in typeDefinition.Properties.ToList())
             {
                 var visibleAttrExist = propertyToRemote.HasAttribute("MakeVisibleAttribute");
                 if (!visibleAttrExist)
                 {
-                    typeDefinition.Properties.Remove(propertyToRemote);
+                    if (propertyToRemote.GetMethod != null &&
+                        (propertyToRemote.GetMethod.IsPrivate ||
+                         propertyToRemote.GetMethod.IsAssembly ||
+                         propertyToRemote.GetMethod.IsFamilyOrAssembly ||
+                         propertyToRemote.GetMethod.IsFamilyAndAssembly))
+                    {
+                        typeDefinition.Methods.Remove(propertyToRemote.GetMethod);
+                        typeDefinition.Properties.Remove(propertyToRemote);
+                    }
+
+                    if (propertyToRemote.SetMethod != null &&
+                        (propertyToRemote.SetMethod.IsPrivate ||
+                         propertyToRemote.SetMethod.IsAssembly ||
+                         propertyToRemote.SetMethod.IsFamilyOrAssembly ||
+                         propertyToRemote.SetMethod.IsFamilyAndAssembly))
+                    {
+                        typeDefinition.Methods.Remove(propertyToRemote.SetMethod);
+                        typeDefinition.Properties.Remove(propertyToRemote);
+                    }
                 }
             }
 

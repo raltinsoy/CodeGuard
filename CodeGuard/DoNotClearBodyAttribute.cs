@@ -12,6 +12,5 @@ namespace CodeGuard
     [AttributeUsage(AttributeTargets.All, Inherited = false)]
     public sealed class DoNotClearBodyAttribute : Attribute
     {
-        //TODO: does not work on property
     }
 }
