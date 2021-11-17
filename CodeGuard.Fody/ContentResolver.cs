@@ -32,8 +32,6 @@ namespace CodeGuard.Fody
         private void ClearContentAndAddException(MethodDefinition method)
         {
             method.Body.Instructions.Clear();
-            method.Body.Variables.Clear();
-            //method.Body.MaxStackSize = 8; //TODO: not working
 
             var ilProcessor = method.Body.GetILProcessor();
 
