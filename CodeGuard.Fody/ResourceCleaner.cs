@@ -10,6 +10,9 @@ namespace CodeGuard.Fody
     {
         public void CleanResources()
         {
+            if (!CleanResourcesConfig)
+                return;
+
             //for WPF xamls etc.
             ModuleDefinition.Resources.Clear();
         }

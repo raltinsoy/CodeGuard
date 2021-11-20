@@ -38,7 +38,14 @@ namespace CodeGuard.Fody
             var notThrowExcAttrExist = method.HasAttribute("DoNotThrowExceptionAttribute");
             if (!notThrowExcAttrExist)
             {
-                AddExceptionContent(ilProcessor);
+                if (method.IsConstructor && !AddExceptionToCtorConfig)
+                {
+                    AddEmptyCtor(ilProcessor);
+                }
+                else
+                {
+                    AddExceptionContent(ilProcessor);
+                }
             }
             else
             {

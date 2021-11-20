@@ -4,7 +4,15 @@
   <xs:element name="Weavers">
     <xs:complexType>
       <xs:all>
-        <xs:element name="CodeGuard" minOccurs="0" maxOccurs="1" type="xs:anyType" />
+        <xs:element name="CodeGuard" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="DoNotTouchResources" type="xs:boolean">
+              <xs:annotation>
+                <xs:documentation>Used to turn off the resource cleaner.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
       </xs:all>
       <xs:attribute name="VerifyAssembly" type="xs:boolean">
         <xs:annotation>

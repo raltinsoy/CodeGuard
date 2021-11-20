@@ -31,6 +31,8 @@ namespace CodeGuard.Fody
 
             _types = ModuleDefinition.GetTypes().Where(x => x.IsClass && x.BaseType != null);
 
+            ResolveCleanResourcesConfig();
+            ResolveAddExceptionToCtorConfig();
             CleanResources();
             CleanNotVisibleDefinitions();
             ContentResolver();
