@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace CodeGuard.Fody
 
             _types = ModuleDefinition.GetTypes().Where(x => x.IsClass && x.BaseType != null);
 
+            CleanResources();
             CleanNotVisibleDefinitions();
             ContentResolver();
             CleanAttributes();
