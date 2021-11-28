@@ -6,9 +6,14 @@
       <xs:all>
         <xs:element name="CodeGuard" minOccurs="0" maxOccurs="1">
           <xs:complexType>
-            <xs:attribute name="DoNotTouchResources" type="xs:boolean">
+            <xs:attribute name="CleanResources" type="xs:boolean" default="true">
               <xs:annotation>
                 <xs:documentation>Used to turn off the resource cleaner.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="AddExceptionToCtor" type="xs:boolean" default="true">
+              <xs:annotation>
+                <xs:documentation>Used to control if constructor exception should be inserted.</xs:documentation>
               </xs:annotation>
             </xs:attribute>
           </xs:complexType>
